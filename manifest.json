@@ -1,20 +1,20 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Epitech Test Diff",
-  "version": "1.0.1",
-
+  "version": "1.0.2",
   "description": "Retrieves failed tests and displays their diff.",
   "author": "Sigmanificient",
-
   "permissions": [
-    "tabs",
+    "tabs"
+  ],
+  "host_permissions": [
     "https://my.epitech.eu/*"
   ],
   "content_scripts": [
     {
       "matches": ["https://my.epitech.eu/*"],
       "js": ["content.js"],
-       "run_at": "document_end"
+      "run_at": "document_end"
     }
   ],
   "icons": {
