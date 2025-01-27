@@ -1,2 +1,14 @@
-extension.zip:
-	zip extension.zip * -r
+EXT := extension
+
+.POSIX:
+.SUFFIXES:
+
+$(EXT).xpi: $(EXT).zip
+	mv $< $@
+
+$(EXT).zip:
+	zip -r -FS ./$@ * --exclude '*.git*'
+
+.PHONY: clean
+clean:
+	$(RM) $(EXT).zip $(EXT).xpi
