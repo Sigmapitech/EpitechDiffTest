@@ -4,7 +4,7 @@ EXT := extension
 .SUFFIXES:
 
 $(EXT).xpi: $(EXT).zip
-	mv $< $@
+	cp $< $@
 
 $(EXT).zip:
 	zip -r -FS ./$@ * --exclude '*.git*'
