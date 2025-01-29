@@ -37,28 +37,44 @@ function mountDiffOnPage(diffText) {
 function computeDiff(got, expected) {
     const gotLines = got.split("\n");
     const expectedLines = expected.split("\n");
+
+    const lcsTable = Array(gotLines.length + 1)
+        .fill(null)
+        .map(() => Array(expectedLines.length + 1).fill(0));
+
+    for (let i = 1; i <= gotLines.length; i++) {
+        for (let j = 1; j <= expectedLines.length; j++) {
+            if (gotLines[i - 1] === expectedLines[j - 1]) {
+                lcsTable[i][j] = lcsTable[i - 1][j - 1] + 1;
+            } else {
+                lcsTable[i][j] = Math.max(
+                  lcsTable[i - 1][j],
+                  lcsTable[i][j - 1]
+                );
+            }
+        }
+    }
+
+    let i = gotLines.length,
+        j = expectedLines.length;
     const diffLines = [];
-    const maxLength = Math.max(gotLines.length, expectedLines.length);
 
-    for (let i = 0; i < maxLength; i++) {
-        const gotLine = gotLines[i];
-        const expectedLine = expectedLines[i];
-
-        if (gotLine === expectedLine) {
-            diffLines.push(`  ${gotLine}`);
-        } else if (gotLine === undefined) {
-            diffLines.push(`+ ${expectedLine}`);
-        } else if (expectedLine === undefined) {
-            diffLines.push(`- ${gotLine}`);
+    while (i > 0 || j > 0) {
+        if (i > 0 && j > 0 && gotLines[i - 1] === expectedLines[j - 1]) {
+            diffLines.unshift(`  ${gotLines[i - 1]}`);
+            i--;
+            j--;
+        } else if (j > 0 && (i === 0 || lcsTable[i][j - 1] >= lcsTable[i - 1][j])) {
+            diffLines.unshift(`+ ${expectedLines[j - 1]}`);
+            j--;
         } else {
-            diffLines.push(`- ${gotLine}`);
-            diffLines.push(`+ ${expectedLine}`);
+            diffLines.unshift(`- ${gotLines[i - 1]}`);
+            i--;
         }
     }
 
     return diffLines.join("\n");
 }
-
 function waitForContent(selector, callback) {
     const target = document.querySelector(selector);
 
