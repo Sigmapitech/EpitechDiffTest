@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Epitech Test Diff",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "Retrieves failed tests and displays their diff.",
   "author": "Sigmanificient",
   "permissions": [
@@ -19,7 +19,7 @@
   ],
   "browser_specific_settings": {
     "gecko": {
-      "id": "{5add367e-cb92-4f5a-b08c-363808acbb14}"
+      "id": "epitech-diff@epitech.eu"
     }
   },
   "icons": {
