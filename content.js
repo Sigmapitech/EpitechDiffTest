@@ -1,4 +1,9 @@
 function mountDiffOnPage(diffText) {
+    const diffBox = document.querySelector(".diff-viewer");
+
+    if (diffBox != null)
+        return;
+
     const diffContainer = document.createElement("div");
     diffContainer.style.border = "1px solid #ccc";
     diffContainer.style.padding = "1em";
@@ -117,5 +122,33 @@ function processFailDetails(failDetails) {
     console.log("Computed Diff:\n", diffText);
     mountDiffOnPage(diffText);
 }
+
+(function () {
+    const pushState = history.pushState;
+    history.pushState = function (...args) {
+        pushState.apply(history, args);
+        printHello();
+    };
+
+    const replaceState = history.replaceState;
+    history.replaceState = function (...args) {
+        replaceState.apply(history, args);
+        printHello();
+    };
+
+    window.addEventListener(
+        "popstate",
+        () => waitForContent(".fail-details", processFailDetails));
+
+    const observer = new MutationObserver(() => {
+        if (window.location.href !== lastUrl) {
+            lastUrl = window.location.href;
+            waitForContent(".fail-details", processFailDetails);
+        }
+    });
+
+    let lastUrl = window.location.href;
+    observer.observe(document, { childList: true, subtree: true });
+})();
 
 waitForContent(".fail-details", processFailDetails);
