@@ -8,11 +8,11 @@
     "tabs"
   ],
   "host_permissions": [
-    "https://my.epitech.eu/*"
+    "https://myresults.epitest.eu/*"
   ],
   "content_scripts": [
     {
-      "matches": ["https://my.epitech.eu/*"],
+      "matches": ["https://myresults.epitest.eu/*"],
       "js": ["content.js"],
       "run_at": "document_end"
     }
